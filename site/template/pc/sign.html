@@ -1,0 +1,77 @@
+<table align="center" height="450" border="0" width="770" cellpadding="0" cellspacing="0" id="sigintable" bgcolor="#f2f2f2">
+  <tr>
+    <td height="100">
+    <div class="logo"><img src="/misc/images/logo.png" height="20" alt="首页"></div>
+    <div class="word">奥莲会员 登入/注册</div>
+    <div class="line"></div>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+    <form onsubmit="return userSignIn();">
+    <table width="100%" border="0" class="main" align="center" cellpadding="0" cellspacing="0">
+	  <tr>
+	    <td width="45%" valign="top">
+			<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" class="sigintb" id="sigintb">
+			  <tr>
+			    <td><div class="thetitle"><div class="tword">会员登入</div></div></td>
+			  </tr>
+			  <tr>
+			    <td>帐号：<input name="username" id="username_in" type="text" placeholder="注册时的邮箱地址" /><br><font color="red" class="username_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td>密码：<input name="passwd" id="passwd_in" type="password" placeholder="" /><br><font color="red" class="passwd_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td class="yzm">验证：<input id="yzm_in" name="yzm" type="text" placeholder="" /><img src="/vcode" id="Image1" style="cursor: pointer;" onmouseup="refreshYZM(1)"  /><br><font color="red" class="yzm_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td align="center" class="submittb">
+			    	<input type="image" id="signin_btn" class="submit" src="/misc/images/misc/sigin.png"><br>
+			    	<a href="/user/?a=findpasswd" class="findpasswd">忘记密码？找回>><br>
+			    	<div style="height:35px"><img id="loadinggifin" src="/misc/images/misc/loading.gif" height="35" /></div></a>
+			    </td>
+			  </tr>
+			</table>
+			</form>
+		</td>
+	    <td width="55%" valign="top">
+	    	<form onsubmit="return userSignUp();">
+			<table width="88%" border="0" align="center" cellpadding="0" cellspacing="0" class="sigintb" id="siguptb">
+			  <tr>
+			    <td><div class="thetitle"><div class="tword">注册成为会员</div></div></td>
+			  </tr>
+			  <tr>
+			    <td>邮箱地址：<input name="username" id="username_up" type="text" placeholder="需要验证邮箱" /> <font color="red" class="username_up_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td>手机号码：<input name="phone" id="phone_up" type="text" placeholder="能联系到您的手机号码" /> <font color="red" class="phone_up_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td>设置密码：<input name="passwd" id="passwd_up" type="password" placeholder="至少6位字母数字组合" /> <font color="red" class="passwd_up_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td>重复密码：<input name="repasswd" id="repasswd_up" type="password" placeholder="" /> <font color="red" class="repasswd_up_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td class="yzm">图形验证：<input id="yzm_up" name="yzm" type="text" placeholder="" /><img src="/vcode" id="Image2" style="cursor: pointer;" onmouseup="refreshYZM(2)"  /> <font color="red" class="yzm_up_error"></font></td>
+			  </tr>
+			  <tr>
+			    <td align="center" class="submittb">
+			    	<input type="image" id="signup_btn" class="submit" src="/misc/images/misc/reg.png"><br>
+			    	<div style="height:35px"><img id="loadinggif" src="/misc/images/misc/loading.gif" height="35" /></div>
+			    </td>
+			  </tr>
+			</table>
+			</form>
+		</td>
+	  </tr>
+	</table>
+	
+	<div class="result">
+	  	一封带有激活信息的邮件已经发送到您刚刚填写的邮箱。<br>请登入邮箱找到来自“奥莲商服”的邮件，打开后点击链接进行激活验证。<br>此链接24小时内有效
+	</div>
+	
+    </td>
+  </tr>
+</table>
