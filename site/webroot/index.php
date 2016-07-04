@@ -29,7 +29,6 @@ session_start();
 $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 Templates::Assign('user', $user);
 
-include_once 'index_ext.php';
 Templates::Assign('action', $action);
 if($action){
 	$action = $action.".php";

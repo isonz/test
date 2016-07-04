@@ -1,0 +1,58 @@
+<{include file="header.html"}>
+
+<link rel="stylesheet" href="http://127.0.0.210/public/css/glob.css" type="text/css">
+<script type="text/javascript" src="http://127.0.0.210/public/js/func.js"></script>
+<script type="text/javascript" src="http://127.0.0.210/public/js/jquery.md5.js"></script>
+<script type="text/javascript" src="http://127.0.0.210/file/default/js/comm.js"></script>
+<script type="text/javascript" src="http://127.0.0.210/file/v1/js/default.js"></script>
+
+<div id="content" class="clearfix" style="text-align: center; padding: 50px;">
+
+    <style>
+        .input-append, .input-prepend {display: inline-block; margin-bottom: 10px;font-size: 0;white-space: nowrap;vertical-align: middle;}
+        .input-append input, .input-append select, .input-append .uneditable-input {-webkit-border-radius: 4px 0 0 4px;-moz-border-radius: 4px 0 0 4px;border-radius: 4px 0 0 4px;}
+        input {background-color: #ffffff;border: 1px solid #cccccc;-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;-moz-transition: border linear 0.2s, box-shadow linear 0.2s;-o-transition: border linear 0.2s, box-shadow linear 0.2s;transition: border linear 0.2s, box-shadow linear 0.2s;}
+        select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {display: inline-block;height: 20px;padding: 4px 6px; margin-bottom: 10px;font-size: 14px;line-height: 20px;color: #555555;vertical-align: middle;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
+        .input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle {-webkit-border-radius: 0 4px 4px 0;-moz-border-radius: 0 4px 4px 0;border-radius: 0 4px 4px 0;}
+        .input-append .add-on, .input-append .btn, .input-append .btn-group {margin-left: -1px;}
+        .btn {display: inline-block; padding: 4px 12px;  margin-bottom: 0;  font-size: 14px; line-height: 20px; color: #333333;text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle;cursor: pointer;background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);background-repeat: repeat-x;border: 1px solid #cccccc;border-color: #e6e6e6 #e6e6e6 #bfbfbf;border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border-bottom-color: #b3b3b3; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);}
+        .input-append, .input-prepend {display: inline-block; margin-bottom: 10px;font-size: 0;white-space: nowrap;vertical-align: middle;}
+        .input-append .add-on, .input-prepend .add-on, .input-append .btn, .input-prepend .btn, .input-append .btn-group > .dropdown-toggle, .input-prepend .btn-group > .dropdown-toggle {vertical-align: top;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;}
+        .input-append .add-on, .input-append .btn, .input-append .btn-group {margin-left: -4px;}
+        .input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle { -webkit-border-radius: 0 4px 4px 0; -moz-border-radius: 0 4px 4px 0; border-radius: 0 4px 4px 0;}
+
+    </style>
+
+    <div class="input-append">
+        <input id="fieldID1" type="text" value="">
+        <br>
+        <a href="javascript:fileWindowOpen('<{$file_url}>', 'fieldID1', 'value', 2)" class="btn" type="button">Select On Window</a>
+        <br>
+        <a href="javascript:fileIframeOpen()" class="btn" type="button">Select On IFRAME</a>
+
+    </div>
+
+    <br><br>
+    <iframe id="avatar" src="##" width="400" height="400" scrolling="0" frameborder="0"></iframe>
+
+    <div id="bgMask"></div>
+    <div id="bgTransparent"></div>
+    <div id="closePOPBox"></div>
+
+    <script type="text/javascript">
+        var avatarurl = getSecUrl('<{$avatar_url}>', 'fieldID2', 'value', 1, 'iframe');
+        $("#avatar").attr("src", avatarurl);
+
+        function fileIframeOpen(){
+            var filesurl = getSecUrl('<{$file_url}>', 'fieldID1', 'value', 2, 'iframe');
+            $("#bgTransparent").html('<iframe id="files" src="'+filesurl+'" width="100%" height="100%" scrolling="no" frameborder="0"></iframe>');
+            showMask();
+        }
+    </script>
+
+    <br><br>
+    <input id="fieldID2" type="text" value="">
+
+</div>
+
+<{include file="footer.html"}>

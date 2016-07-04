@@ -8,10 +8,6 @@ $(document).ready(function(){
 	show_img();
 	homeSelectProject();
 	
-	$("#closePOPBox").click(function(){
-		closePOPBox();
-	});
-	
 	customzIMG();
 	searchResult();
 	getCitys(0,0,0);
@@ -26,13 +22,7 @@ $(document).ready(function(){
 });
 function scrollTop(){return $("html, body").animate({scrollTop: 0},"slow"),!1}
 function scrollBottom(){return $("html, body").animate({scrollTop: $(document).height()},"slow"),!1}
-function closePOPBox(){
-	$("#POPBox").hide();
-	$("#closePOPBox").hide();
-	$("#bgMask").hide();
-	$("#POPBox").removeAttr("style");
-	$("#closePOPBox").removeAttr("style");
-}
+
 
 function homeSelectProject(){
   	$("#projects").focus(function(){
