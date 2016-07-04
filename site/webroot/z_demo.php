@@ -1,6 +1,6 @@
 <?php
 //--------- CONFIG DEMO
-define('_FILE_URL_', 'http://file.ison.com');
+define('_FILE_URL_', 'http://127.0.0.211');
 define('_FILE_CLIENT_', 'me');
 define('_FILE_CODE_', 'test_demo');
 define('_FILE_TOKEN_', '64aeeeb10f2fa5b49969bf17e156e9ec');
