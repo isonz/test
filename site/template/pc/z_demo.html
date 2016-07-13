@@ -21,6 +21,10 @@
         .input-append .add-on, .input-append .btn, .input-append .btn-group {margin-left: -4px;}
         .input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle { -webkit-border-radius: 0 4px 4px 0; -moz-border-radius: 0 4px 4px 0; border-radius: 0 4px 4px 0;}
 
+        #fieldID1_box p{display:block; float: left; text-align: center; border: 1px #999 solid; margin: 5px; width: 50px; height: 50px; position: relative;}
+        #fieldID1_box p i{display: inline-block; vertical-align: middle; height: 100%;}
+        #fieldID1_box p img{max-width:100%; max-height:100%; vertical-align: middle;}
+        #fieldID1_box p a{display:none; background: url("http://127.0.0.210/public/images/misc/delete01.png") no-repeat; width:20px; height:20px; position: absolute; right: -10px; top:-10px;}
     </style>
 
     <div class="input-append">
@@ -31,6 +35,9 @@
         <a href="javascript:fileIframeOpen()" class="btn" type="button">Select On IFRAME</a>
 
     </div>
+    <br><br>
+
+    <div id="fieldID1_box" class="z-imagesBox" style="border: 1px #eee solid; height: 60px; width: 60%; margin: 0 auto;"></div>
 
     <br><br>
     <iframe id="avatar" src="##" width="1000" height="800" scrolling="0" frameborder="0"></iframe>
@@ -44,7 +51,7 @@
         $("#avatar").attr("src", avatarurl);
 
         function fileIframeOpen(){
-            var filesurl = getSecUrl('<{$file_url}>', 'fieldID1', 'value', 2, 'iframe');
+            var filesurl = getSecUrl('<{$file_url}>', 'fieldID1', 'value', 5, 'iframe');
             $("#bgTransparent").html('<iframe id="files" src="'+filesurl+'" width="100%" height="100%" scrolling="no" frameborder="0"></iframe>');
             showMask();
         }

@@ -1,5 +1,6 @@
 RewriteEngine On
 DirectoryIndex index.php
 RewriteCond %{REQUEST_URI} !^/(misc)/
+RewriteCond %{REQUEST_URI} !^/(crossdomain\.xml)$
 RewriteRule . index.php [L]
 
