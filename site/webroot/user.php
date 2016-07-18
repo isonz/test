@@ -51,11 +51,11 @@ function home($a='')
 			$metainfo = UsersMeta::getOne(array('id' => $userid));
 			$address_id = isset($metainfo['address_id']) ? $metainfo['address_id'] : 0;
 			if($address_id){
-				Address::update($address_id, array('name'=>$_POST['name'], 'phone'=>$POST['phone'], 'province'=>$_POST['province'], 'city'=>$_POST['city'], 'county'=>$_POST['county'], 'address'=>$_POST['address'], 'postcode'=>$_POST['postcode']));
+				Address::update($address_id, array('name'=>$POST['name'], 'phone'=>$_POST['phone'], 'province'=>$_POST['province'], 'city'=>$_POST['city'], 'county'=>$_POST['county'], 'address'=>$_POST['address'], 'postcode'=>$_POST['postcode']));
 			}else{
-				$address_id = Address::insert(array('user_id'=>$userid, 'name'=>$_POST['name'], 'phone'=>$POST['phone'], 'province'=>$_POST['province'], 'city'=>$_POST['city'], 'county'=>$_POST['county'], 'address'=>$_POST['address'], 'postcode'=>$_POST['postcode']));
+				$address_id = Address::insert(array('user_id'=>$userid, 'name'=>$POST['name'], 'phone'=>$_POST['phone'], 'province'=>$_POST['province'], 'city'=>$_POST['city'], 'county'=>$_POST['county'], 'address'=>$_POST['address'], 'postcode'=>$_POST['postcode']));
 			}
-			UsersMeta::update($userid, array('name'=>$_POST['name'], 'phone'=>$POST['phone'], 'address_id'=>$address_id));
+			UsersMeta::update($userid, array('name'=>$POST['name'], 'phone'=>$_POST['phone'], 'address_id'=>$address_id));
 		}
 	}
 	
@@ -64,9 +64,9 @@ function home($a='')
 		$editpasswd = 'editpasswd';
 		$passwdsave = isset($_REQUEST['passwdsave']) ? $_REQUEST['passwdsave'] : 0;
 		if($passwdsave){
-			$oldpasswd = $POST['oldpasswd'];
-			$passwd = $POST['passwd'];
-			$repasswd = $POST['repasswd'];
+			$oldpasswd = $_POST['oldpasswd'];
+			$passwd = $_POST['passwd'];
+			$repasswd = $_POST['repasswd'];
 			$flag = Users::changePassword($username, $passwd, $oldpasswd, $repasswd);
 			if(!$flag) $err_msg = '<font color="red">密码修改失败，请勿使用之前使用过的密码</font>';
 			if(-1==$flag) $err_msg = '<font color="red">新密码至少需要6位</font>';

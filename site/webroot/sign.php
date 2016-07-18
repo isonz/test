@@ -58,13 +58,13 @@ if('ajax'==$type){
 function sigIn()
 {
 	global $POST;
-	$username = $_POST['username'];
+	$username = $POST['username'];
 	if(!Users::check(array("condition"=> array('username'=>$username)))) ABase::toJson(2,'用户名不存在');
 	
-	$passwd = $_POST['passwd'];
+	$passwd = $POST['passwd'];
 	if(strlen($passwd) < 6) ABase::toJson(3,'至少需要6位');
 	
-	$yzm = $_POST['yzm'];
+	$yzm = $POST['yzm'];
 	require_once _LIBS."Vcode/Vcode.class.php";
 	$vcode = strtolower(Vcode::getCode());
 	if($yzm != $vcode) ABase::toJson(4,'验证错误');
@@ -83,19 +83,19 @@ function sigIn()
 function sigUp()
 {
 	global $POST;
-	$username = $_POST['username'];
+	$username = $POST['username'];
 	if(!Func::checkEmail($username)) ABase::toJson(2,'邮箱格式错误');
 	if(Users::check(array("condition"=> array('username'=>$username)))) ABase::toJson(8,'用户名被占用');
 	
-	$phone = $POST['phone'];
+	$phone = $_POST['phone'];
 	//if(!Func::checkmobile($phone)) ABase::toJson(3,'格式错误');
 	
-	$passwd = $_POST['passwd'];
-	$repasswd = $_POST['repasswd'];
+	$passwd = $POST['passwd'];
+	$repasswd = $POST['repasswd'];
 	if(strlen($passwd) < 6) ABase::toJson(4,'至少需要6位');
 	if($passwd != $repasswd) ABase::toJson(5,'密码不匹配');
 		
-	$yzm = $_POST['yzm'];
+	$yzm = $POST['yzm'];
 	require_once _LIBS."Vcode/Vcode.class.php";
 	$vcode = strtolower(Vcode::getCode());
 	if($yzm != $vcode) ABase::toJson(6,'验证错误');
