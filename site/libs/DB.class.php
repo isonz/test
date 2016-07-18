@@ -1,8 +1,8 @@
 <?php
 /*
  * $GLOBALS['CONFIG_DATABASE'] = array(
- * 	'A' => array('host' => '127.0.0.1','user'=> 'root',	'pwd' => 'admin888','dbname' => 'onionhealth','port' => 3306,'tb_prefix' => 'oh_'),
- *	'B' => array('host' => '127.0.0.1','user'=> 'root',	'pwd' => 'admin888','dbname' => 'onionhealth_wx','port' => 3306,'tb_prefix' => 'wx_')
+ * 	'DEFAULT' => array('host' => '127.0.0.1','user'=> 'root',	'pwd' => 'admin888','dbname' => 'onionhealth','port' => 3306,'tb_prefix' => 'oh_'),
+ *	'A' => array('host' => '127.0.0.1','user'=> 'root',	'pwd' => 'admin888','dbname' => 'onionhealth_wx','port' => 3306,'tb_prefix' => 'wx_')
  * );
  */
 
@@ -13,7 +13,7 @@ class DB
 	static private $_params      = array();
 	static private $_lastConnect = null;
 	static private $_config      = array();
-	static private $_config_mark = 'A';		//当前数据库配置，允许链接不同的数据库
+	static private $_config_mark = 'DEFAULT';		//当前数据库配置，允许链接不同的数据库
 	static public $mDebug	     = false;
 	static private $_retry		 = 0;
 	static private $_transaction = false;
@@ -58,7 +58,7 @@ class DB
 	}
 	
 	//---- 链接不同的数据库
-	static public function myConfig($mark = 'A')
+	static public function myConfig($mark = 'DEFAULT')
 	{
 		self::$_config_mark = $mark;
 		return self::$_config_mark;
@@ -310,12 +310,19 @@ class DB
 	/*
 	 * 查询多条数据
 	*/
-	static function getRows($tableName, $where='1=1', $select = '*', $order='id DESC')
+	static function getRows($tableName, array $where, $select = '*', $order='id DESC')
 	{
 		if(!$tableName) return false;
-		if(!$where) $where='1=1';
-		$sql = "SELECT $select FROM $tableName WHERE $where ORDER BY $order";
-		$result = self::GetQueryResult($sql, false);
+		if(!$where) $where = array(1=>1);
+        $params = array();
+        $field = '';
+        $i = 0;
+        foreach ($where AS $k => $v){
+            if($i < 1) $field .= "$k = ? "; else $field .= "AND $k = ?";
+            $params[] = $v;
+        }
+		$sql = "SELECT $select FROM $tableName WHERE $field ORDER BY $order";
+		$result = self::GetQueryResult($sql, false, $params);
 		return $result;
 	}
 	

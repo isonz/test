@@ -1,6 +1,7 @@
 <?php
 require_once('../config.php');
 
+/*
 //---------- Security
 $POST = array(); $GET = array();
 if($_POST){
@@ -13,6 +14,7 @@ if($_POST){
 $REQUEST = $_REQUEST;
 $_REQUEST = Security::getRequest('request');
 //------------ End Security
+*/
 
 //---------------- 控制器
 $uri = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : null;

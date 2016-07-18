@@ -64,12 +64,14 @@ if(!defined('_SMARTY_CACHE')){
 
 //======================================== Config
 $GLOBALS['CONFIG_DATABASE'] = array(
-	'host'      => '127.0.0.1',
-    'user'      => 'root',
-    'pwd'       => 'admin888',
-    'dbname'    => 'test',
-	'port'      => 3306,
-	'tb_prefix' => 'test_'
+	'DEFAULT'=>array(
+		'host'      => '127.0.0.1',
+		'user'      => 'root',
+		'pwd'       => 'admin888',
+		'dbname'    => 'test',
+		'port'      => 3306,
+		'tb_prefix' => 'test_'
+	)
 );
 $GLOBALS['CONFIG_SMTP'] = array(
 	'server'    => "smtp.xxx.com",
