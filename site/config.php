@@ -98,5 +98,3 @@ foreach (glob(_SMARTY."/*.php") as $lib_smarty){
 $GLOBALS['EXCLUDE_URL'] = array('vcode');
 
 
-
-

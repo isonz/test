@@ -25,7 +25,8 @@ class SecReq
         $post['md'] = md5($sign);
 		if($ext_send_data){
 			$extDataStr = implode('', $ext_send_data);
-			$md = md5($sign.$extDataStr);
+            $str = Func::dictSortStr($sign.$extDataStr); //字典排序:防止参数位置不对产生的验证不通过
+			$md = md5($str);
 			$post['md'] = $md;
 			$post = array_merge($post, $ext_send_data);
 		}
@@ -34,15 +35,15 @@ class SecReq
 		$pContent = Func::curlPost($url, $post);
 		if($session) session_start();
 
-		if($pContent) $pContent = json_decode($pContent, true);
-		if(!$pContent){
+		if($pContent) $content = json_decode($pContent, true);
+		if(!$content){
 			ModsBase::log("SecReq.send[pContent:".serialize($pContent)."]");
 			return false;
 		}
 
-		$status = isset($pContent['status']) ? (int)$pContent['status'] : 1;
-		$msg = isset($pContent['msg']) ? $pContent['msg'] : '';
-		$data = isset($pContent['data']) ? $pContent['data'] : array();
+		$status = isset($content['status']) ? (int)$content['status'] : 1;
+		$msg = isset($content['msg']) ? $content['msg'] : '';
+		$data = isset($content['data']) ? $content['data'] : array();
 		if($status || 'SUCCESS'!=$msg){
 			ModsBase::log("SecReq.send[status:$status, msg:$msg]");
 			return false;

@@ -17,10 +17,12 @@ if($uri){
 	$action = isset($action[0]) ? $action[0] : null;
 }
 
+/*
 //----------------- user
-session_start();
+Session::start();
 $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 Templates::Assign('user', $user);
+*/
 
 Templates::Assign('action', $action);
 if($action){

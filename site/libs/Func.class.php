@@ -68,10 +68,10 @@ class Func
 	static public function encodeStr($tex, $type = "encode", $key = "key123@ison")
     {
 		$chrArr = array(
-					'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-	                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-	                '0','1','2','3','4','5','6','7','8','9'
-				);
+			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+			'0','1','2','3','4','5','6','7','8','9'
+		);
 	    if($type=="decode"){
 	        if(strlen($tex)<14)return false;
 	        $verity_str=substr($tex, 0,8);
@@ -105,59 +105,8 @@ class Func
 		$size = @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
 		echo '<br>程序运行内存消耗: ' . $size;
 	}
-	
-	/* 无限极分类树形
-	 * $items = array(
-     *			1 => array('id' => 1, 'pid' => 0, 'name' => '安徽省'),
-     *			2 => array('id' => 2, 'pid' => 0, 'name' => '浙江省'),
-     *			3 => array('id' => 3, 'pid' => 1, 'name' => '合肥市'),
-     *			4 => array('id' => 4, 'pid' => 3, 'name' => '长丰县'),
-     *			5 => array('id' => 5, 'pid' => 1, 'name' => '安庆市'),
-     * );
-     * $tree = self::cateGenTree($items,'id','pid','son');
-     * print_r($tree);
-	 */
-	static function cateGenTree($items,$id='id', $fid='fid', $son='son')
-	{
-		$tree = array();
-		foreach($items as $item){
-			if(isset($items[$item[$fid]])){
-				$items[$item[$fid]][$son][] = &$items[$item[$id]];
-			}else{
-				$tree[] = &$items[$item[$id]];
-			}
-		}
-		return $tree;
-	}
-	
-	/* 格式化的树形数据 如
-	 * Array(
-     *	[2] => 男装
-     *	[5] => -羽绒棉服
-     *	[6] => --红色
-     *	[1] => 女装
-     *	[3] => -羽绒棉服
-	 *	)
-	 */
-	static public  $_array_tmp = array();
-	static function formatTreeData($tree, $id='id', $title='title', $son='son', $i=0)
-	{
-		$symbol = '';
-		for($j=$i; $j>0; $j--){
-			$symbol .= '--';
-		}
-		foreach($tree as $t){
-			self::$_array_tmp[$t[$id]] = $symbol . $t[$title];
-			if(isset($t[$son])){
-				$k = $i;
-				$k++;
-				self::formatTreeData($t[$son],$id, $title, $son, $k);
-			}
-		}
-		return self::$_array_tmp;
-	}
-	
-	//获取 URL 的主域名
+
+	//获取 URL Domain Name
 	static function getUrlDomain($url)
 	{
 		if(!$url) return false;
@@ -166,6 +115,15 @@ class Func
 		$domain = explode('.', $domain);
 		$len = count($domain);
 		$domain = $domain[$len-2].'.'.$domain[$len-1];
+		return $domain;
+	}
+
+	//获取 URL 的子域名
+	static function getUrlSubDomain($url)
+	{
+		if(!$url) return false;
+		$domain = parse_url($url);
+		$domain = strtolower($domain['host']);
 		return $domain;
 	}
 	
@@ -195,7 +153,8 @@ class Func
 		$params = implode('&',$tmp);
 		return $params;
 	}
-	
+
+    //获取URL中的参数
 	static function urlParams($url)
 	{
 		if(!$url) return false;
@@ -204,25 +163,7 @@ class Func
 		$params = self::convertUrlQuery($query);
 		return $params;
 	}
-	
-	static function curlChangeIp($url)
-	{
-		if(!$url) return false;
-		$ip = rand(1,255).".".rand(1,255).".".rand(1,255).".".rand(1,255)."";
-		$header = array(
-			"CLIENT-IP:$ip",
-			"X-FORWARDED-FOR:$ip",
-		);		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-		$content = curl_exec($ch);
-		//var_dump(curl_getinfo($ch));
-		curl_close($ch);
-		return $content;
-	}
-	
+
 	//if "text/json" data must array, else can be string.
 	static function curlPost($url, $data=array(), $header=array())
 	{
@@ -232,7 +173,7 @@ class Func
 			$header = array('Content-Type: application/json; charset=utf-8', 'Content-Length: '.strlen($data));
 		}
 		$ssl = substr($url, 0, 8) == "https://" ? TRUE : FALSE;
-		
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST,true);
@@ -240,26 +181,26 @@ class Func
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch,CURLOPT_TIMEOUT,5);
-		
+
 		if ($ssl){
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		}
-		
+
 		$content = curl_exec($ch);
 		curl_close($ch);
-	
+
 		return $content;
 	}
-	
+
 	static function curlGet($url)
 	{
 		if(!$url) return false;
 		$ssl = substr($url, 0, 8) == "https://" ? TRUE : FALSE;
-		
+
 		//$header[] = "Content-type: text/xml";
 		$header[] = false;
-		
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -271,10 +212,10 @@ class Func
 		}
 		$content = curl_exec($ch);
 		curl_close($ch);
-	
+
 		return $content;
 	}
-	
+
 	//利用file_get_contents POST数据
 	//用法：$data = array('name'=>'test','email'=>'test@gmail.com'); Post('http://www.baidu.com', $data);
 	static public function fgcPost($url, $post = null)
@@ -289,9 +230,9 @@ class Func
 			);
 		}
 		return file_get_contents($url, false, stream_context_create($context));
-	} 
-	
-	
+	}
+
+
 	//限制显示的字符数，{$content|strip_tags|truncate_cn=460,'..',0}
 	static function truncate_cn($string,$length=0,$ellipsis='…',$start=0)
 	{
@@ -344,7 +285,8 @@ class Func
 		}
 		return (int)$result;
 	}
-	
+
+    //创建目录
 	static function createDir($aimUrl) 
 	{
 		if(!$aimUrl) return false;
@@ -359,25 +301,6 @@ class Func
 			}
 		}
 		return $result;
-	}
-	
-	static function downImage($url, $filename)
-	{ 
-		if(!$url || !$filename) return false; 
-		if (file_exists($filename)) return $filename;
-		
-		ob_start(); 
-		readfile($url); 
-		$img = ob_get_contents(); 
-		ob_end_clean(); 
-		$size = strlen($img); 
-		if($size < 5000) return false;	//排除无效请求情况.5K以内无效
-		
-		$fp2=@fopen($filename, "a"); 
-		//$imageFile = stream_get_contents($fp2);
-		fwrite($fp2,$img); 
-		fclose($fp2); 
-		return $filename; 
 	}
 	
 	//分页栏显示第一页和最后一页，中间显示页数自定义
@@ -422,259 +345,7 @@ class Func
 		}
 		return $arr;
 	}
-	
-	//实现等比例不失真缩放
-	/*
-	 * $file 图片路径，比如 /tmp/1.jpg
-	 * $maxwidth 定义生成图片的最大宽度（单位：像素）
-	 * $maxheight 生成图片的最大高度（单位：像素）
-	 * $name 生成的图片名
-	 * $filetype 最终生成的图片类型（.jpg/.png/.gif）
-	 * $watermark 是否添加水印 array('pathe'=>'水印路径','margin'=>'水印离的边距');
-	 */
-	static public function resizeImage($file, $maxwidth, $maxheight, $watermark=array(), $name='',$filetype='.jpg')
-	{
-		if($watermark){
-			$im = Func::watermarkImage($file, $watermark['path'], $watermark['margin'], false);
-			if(!$im) return false;
-		}else{
-			$ext = substr(strrchr($file, '.'), 1);
-			switch ($ext){
-				case 'png':		//进行透明处理
-					$im = imagecreatefrompng($file);
-					if(!$im) $im = imagecreatefromjpeg($file);
-					if(!$im) $im = imagecreatefromgif($file);
-					break;
-				case 'gif':
-					$im = imagecreatefromgif($file);
-					if(!$im) $im = imagecreatefromjpeg($file);
-					if(!$im) $im = imagecreatefrompng($file);
-					break;
-				case 'jpg':
-				default:
-					$im = imagecreatefromjpeg($file);
-					if(!$im) $im = imagecreatefrompng($file);
-					if(!$im) $im = imagecreatefromgif($file);
-			}
-			if(!$im) return false;
-		}
-		
-		$maxwidth = (int)$maxwidth;
-		$maxheight = (int)$maxheight;
-		$pic_width = imagesx($im);
-		$pic_height = imagesy($im);
-		
-		$resizewidth_tag = false;
-		$resizeheight_tag = false;
-		if(($maxwidth && $pic_width > $maxwidth) || ($maxheight && $pic_height > $maxheight)){
-			if($maxwidth && $pic_width > $maxwidth){
-				$widthratio = $maxwidth/$pic_width;
-				$resizewidth_tag = true;
-			}	
-			if($maxheight && $pic_height > $maxheight){
-				$heightratio = $maxheight/$pic_height;
-				$resizeheight_tag = true;
-			}
-			if($resizewidth_tag && $resizeheight_tag){
-				if($widthratio<$heightratio)
-					$ratio = $widthratio;
-				else
-					$ratio = $heightratio;
-			}
-			if($resizewidth_tag && !$resizeheight_tag)
-				$ratio = $widthratio;
-			if($resizeheight_tag && !$resizewidth_tag)
-				$ratio = $heightratio;
-	
-			$newwidth = $pic_width * $ratio;
-			$newheight = $pic_height * $ratio;
-	
-			if(function_exists("imagecopyresampled")){
-				$newim = imagecreatetruecolor($newwidth,$newheight);
-				imagecopyresampled($newim,$im,0,0,0,0,$newwidth,$newheight,$pic_width,$pic_height);
-			}else{
-				$newim = imagecreate($newwidth,$newheight);
-				imagecopyresized($newim,$im,0,0,0,0,$newwidth,$newheight,$pic_width,$pic_height);
-			}
-			if(!$name){
-				imagejpeg($newim);
-				return $newim;
-			}else{
-				$name = $name.$filetype;
-				imagejpeg($newim,$name);
-				imagedestroy($newim);
-			}
-		}else{
-			if(!$name){
-				imagejpeg($im);
-				return $im;
-			}else{
-				$name = $name.$filetype;
-				imagejpeg($im,$name);
-				imagedestroy($im);
-			}
-		}
-	}
-	
-	//实现上下剪切图片, $top 为剪切上部像数数, $bottom 为剪切底部像数数
-	/*
-	 * $file 图片路径，比如 /tmp/1.jpg
-	* $top 去除上部像数数,（单位：像素）
-	* $bottom 去除底部像数数（单位：像素）
-	* $left 去除左边像数数（单位：像素）
-	* $right 去除右边像数数（单位：像素）
-	* $name 生成的图片名
-	* $return_width_height:是否返回高度宽度，此时返回数组
-	* $filetype 最终生成的图片类型（.jpg/.png/.gif）
-	*/
-	static public function cutImage($file, $top=0, $bottom=0, $left=0, $right=0, $newfile='', $return_width_height=0, $newfiletype='')
-	{
-		if(!$file || !file_exists($file)) return false;
-		$top = (int)$top;
-		$bottom = (int)$bottom;
-		$left = (int)$left;
-		$right = (int)$right;
-		if($top<0) $top = 0;
-		if($bottom<0) $bottom = 0;
-		if($left<0) $left = 0;
-		if($right<0) $right = 0;
-		if(!$top && !$bottom && !$left && !$right) return $file;
-		 
-		$ext = substr(strrchr($file, '.'), 1);
-		switch ($ext){
-			case 'png':		//进行透明处理
-				$im = imagecreatefrompng($file);
-				if(!$im) $im = imagecreatefromjpeg($file);
-				if(!$im) $im = imagecreatefromgif($file);
-				break;
-			case 'gif':
-				$im = imagecreatefromgif($file);
-				if(!$im) $im = imagecreatefromjpeg($file);
-				if(!$im) $im = imagecreatefrompng($file);
-				break;
-			case 'jpg':
-			default:
-				$im = imagecreatefromjpeg($file);
-				if(!$im) $im = imagecreatefrompng($file);
-				if(!$im) $im = imagecreatefromgif($file);
-		}
-		if(!$im) return false;
 
-		$pic_width = imagesx($im);
-		$pic_height = imagesy($im);
-		 
-		$newwidth = $pic_width - $left - $right;
-		$newheight = $pic_height - $top - $bottom;
-		$newim = imagecreatetruecolor($newwidth, $newheight);
-		if(!$newim) return false;
-
-		imagecopy($newim, $im, 0, 0, $left, $top, $pic_width, $pic_height);
-	
-		if(!$newfile){
-			imagejpeg($newim);
-			imagedestroy($im);
-			if(!$return_width_height) return $newim;
-			return array('im'=>$newim, 'width'=>$newwidth, 'height'=>$newheight);
-		}else{
-			$newfile = $newfile.$newfiletype;
-			imagejpeg($newim, $newfile);
-			imagedestroy($newim);
-			imagedestroy($im);
-			if(!$return_width_height) return $newfile;
-			return array('file'=>$newfile, 'width'=>$newwidth, 'height'=>$newheight);
-		}
-	
-	}
-	
-	//实现图片居中添加水印
-	/*
-	 * $file 大图原图片路径，比如 /tmp/1.jpg
-	* $water_file 水印图片地址：/tmp/water.jpg
-	* $name 生成的图片名
-	* $magrin 离顶部或底边距离
-	* $return_width_height:是否返回高度宽度，此时返回数组
-	* $filetype 最终生成的图片类型（.jpg/.png/.gif）
-	*/
-	static public function watermarkImage($file, $water_file, $magrin=0, $show=true, $newfile='', $return_width_height=0, $rand=0, $newfiletype='')
-	{
-		if(!$file || !file_exists($file) || !$water_file || !file_exists($water_file)) return false;
-		$magrin = (int)$magrin;
-		if($magrin < 0) $magrin=0;
-	
-		$ext = substr(strrchr($file, '.'), 1);
-		switch ($ext){
-            case 'png':     //进行透明处理
-                $im = imagecreatefrompng($file);
-                if(!$im) $im = imagecreatefromjpeg($file);
-                if(!$im) $im = imagecreatefromgif($file);
-                break;
-            case 'gif':
-                $im = imagecreatefromgif($file);
-                if(!$im) $im = imagecreatefromjpeg($file);
-                if(!$im) $im = imagecreatefrompng($file);
-                break;
-            case 'jpg':
-            default:
-                $im = imagecreatefromjpeg($file);
-                if(!$im) $im = imagecreatefrompng($file);
-                if(!$im) $im = imagecreatefromgif($file);
-        }
-        if(!$im) return false;
-
-		$pic_width = imagesx($im);
-		$pic_height = imagesy($im);
-	
-		$ext = substr(strrchr($water_file, '.'), 1);
-		switch ($ext){
-			case 'png':		//进行透明处理
-				$wim = imagecreatefrompng($water_file);
-				imagealphablending($wim,false);
-				imagesavealpha($wim,true);
-				break;
-			case 'gif':
-				$wim = imagecreatefromgif($water_file);
-				break;
-			case 'jpg':
-			default:
-				$wim = imagecreatefromjpeg($water_file);
-		}
-		if(!$wim) return false;		
-
-		$wwidth = imagesx($wim);
-		$wheight = imagesy($wim);
-		if($wwidth > $pic_width || $wheight > ($pic_height-$magrin)) return false;
-	
-		//$dst_x = $pic_width/2 - $wwidth/2;		//居中
-		//$dst_x = 10;								//靠左
-		$dst_x = $pic_width - $wwidth - 10;			//靠右
-		
-		$dst_y = $pic_height - $wheight - $magrin;
-		if($rand){
-			$rand = rand(0, 1);
-			if(1==$rand){
-				$dst_x = 0;
-				$dst_y = $magrin;
-			}
-		}
-		imagecopy($im, $wim, $dst_x, $dst_y, 0, 0, $wwidth, $wheight);
-	
-		if(!$newfile){
-			imagedestroy($wim);
-			if(!$show) return $im;
-			imagejpeg($im);
-			if(!$return_width_height) return $im;
-			return array('im'=>$im, 'width'=>$pic_width, 'height'=>$pic_height);
-		}else{
-			$newfile = $newfile.$newfiletype;
-			imagejpeg($im, $newfile);
-			imagedestroy($im);
-			imagedestroy($wim);
-			if(!$return_width_height) return $newfile;
-			return array('file'=>$newfile, 'width'=>$pic_width, 'height'=>$pic_height);
-		}
-	
-	}
-	
 	/*
 	 * 功能：为多维数组的键或名添加额外的字符串
 	 * 用法：arrayAddStr($data);
@@ -688,19 +359,19 @@ class Func
 		return $tmp;
 	}
 
-	//分离出来的加密和解密方法，2个方法的合体与encodeStr方法同效果,但比之用了2层MD5加密和增加了一道密钥key验证。
+	//加密:分离出来的加密和解密方法，2个方法的合体与encodeStr方法同效果,但比之用了2层MD5加密和增加了一道密钥key验证。
 	static public function encode($tex, $key = "key123@ison")
 	{
 		$chrArr = array(
-				'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-				'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-				'0','1','2','3','4','5','6','7','8','9'
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            '0','1','2','3','4','5','6','7','8','9'
 		);
 		$key_b = $chrArr[rand()%62].$chrArr[rand()%62].$chrArr[rand()%62].$chrArr[rand()%62].$chrArr[rand()%62].$chrArr[rand()%62];
 		$rand_key = $key_b.$key;
 		$rand_key=md5(md5($rand_key).$key_b);
 		$key_p  = substr($rand_key, 0, 10);
-		
+
 		$texlen=strlen($tex);
 		$reslutstr="";
 		for($i=0;$i<$texlen;$i++){
@@ -710,22 +381,23 @@ class Func
 		$reslutstr=substr(md5($reslutstr), 0,8).$reslutstr;
 		return $reslutstr;
 	}
+    //解密
 	static public function decode($tex, $key = "key123@ison")
 	{
 		if(strlen($tex)<24)return false;
 		$verity_str=substr($tex, 0,8);
 		$tex=substr($tex, 8);
 		if($verity_str!=substr(md5($tex),0,8)) return false;  //完整性验证失败
-	
+
 		$key_b = substr($tex,0,6);
 		$rand_key = $key_b.$key;
 		$rand_key=md5(md5($rand_key).$key_b);
 		$key_p  = substr($rand_key, 0, 10);
-		
+
 		$texs=base64_decode(substr($tex, 6));
 		$kp = substr($texs, 0,10);
 		if($key_p !== $kp) return false;	//$key检验
-		
+
 		$tex = substr($texs, 10);
 		$texlen=strlen($tex);
 		$reslutstr="";
@@ -735,7 +407,7 @@ class Func
 		return $reslutstr;
 	}
 	//-------- end 加密
-	
+
 	//检查是否手机号
 	static public function checkmobile($str)
 	{
@@ -760,5 +432,34 @@ class Func
 		$is_email = preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i",$email);
 		return $is_email;
 	}
-	
+
+	//按字典正序排序一个字符串
+	static public function dictSortStr($str)
+	{
+		$strArray = array();
+		for ($i=0; $i < strlen($str); $i++){
+			$strArray[] = $str[$i];
+		}
+		sort($strArray);
+		$str = '';
+		for ($i=0; $i < count($strArray); $i++){
+			$str .= $strArray[$i];
+		}
+		return $str;
+	}
+
+	//发送邮件
+	static function sendEmail($toemail, $title, array $data, $from_name='', $debug = false)
+	{
+		$smtp = new Smtp();
+		if($debug) $smtp->debug = TRUE;
+		$mailsubject = $title;
+		$mailbody = '';
+		foreach ($data as $dt){
+			$mailbody .= "<p>$dt</p><br>";
+		}
+		$send = $smtp->sendmail($toemail, $from_name, $mailsubject, $mailbody);
+		return $send;
+	}
+
 }
