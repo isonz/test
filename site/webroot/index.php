@@ -1,20 +1,11 @@
 <?php
 require_once('../config.php');
 
-/*
 //---------- Security
-$POST = array(); $GET = array();
-if($_POST){
-	$POST = $_POST;		//非安全
-	$_POST = Security::getRequest('post');	//安全
-}else if($_GET){
-	$GET = $_GET;
-	$_GET = Security::getRequest('get');
-}
-$REQUEST = $_REQUEST;
-$_REQUEST = Security::getRequest('request');
+$POST = Security::getRequest('post');	//安全
+$GET = Security::getRequest('get');
+$REQUEST = Security::getRequest('request');
 //------------ End Security
-*/
 
 //---------------- 控制器
 $uri = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : null;

@@ -12,7 +12,7 @@ class SecReq
 			return false;
 		}
 
-		$dataStr = implode(self::SEPARATOR, $encode_data);
+		$dataStr = json_encode($encode_data);
 		$time = time();
 		$sign = $token . self::SEPARATOR . $time . self::SEPARATOR . $dataStr;
 		if($encode_key){
@@ -60,22 +60,21 @@ class SecReq
         $timeout = (int)$timeout;
         if($timeout < 10) $timeout = 10;
 
-        global $REQUEST;
-        $sign = isset($REQUEST['sign']) ? $REQUEST['sign'] : '';
+        $sign = isset($_REQUEST['sign']) ? $_REQUEST['sign'] : '';
         if(!$sign){
             ModsBase::log("SecReq.get[sign:$sign]");
             return false;
         }
-        unset($REQUEST['sign']);
+        unset($_REQUEST['sign']);
 
         if($is_md){
-            $md = isset($REQUEST['md']) ? $REQUEST['md'] : '';
+            $md = isset($_REQUEST['md']) ? $_REQUEST['md'] : '';
             if(!$md){
                 ModsBase::log("SecReq.get[md:$md]");
                 return false;
             }
-            unset($REQUEST['md']);
-            $reqStr = implode('', $REQUEST);
+            unset($_REQUEST['md']);
+            $reqStr = implode('', $_REQUEST);
             $str = Func::dictSortStr($sign.$reqStr); //字典排序:防止参数位置不对产生的验证不通过
             $smd = md5($str);
             if($md != $smd){
@@ -107,8 +106,7 @@ class SecReq
         }
         unset($decode[0]);
         unset($decode[1]);
-        $decode = array_values($decode);
-        return $decode;
+        return json_decode($decode[2], true);
 	}
 
     //生成加密数据
@@ -118,7 +116,7 @@ class SecReq
             ModsBase::log("SecReq.setEncode[token:$token]");
             return false;
         }
-        $dataStr = implode(self::SEPARATOR, $encode_data);
+        $dataStr = json_encode($encode_data);
         $time = time();
         $sign = $token . self::SEPARATOR . $time . self::SEPARATOR . $dataStr;
         if($encode_key){
