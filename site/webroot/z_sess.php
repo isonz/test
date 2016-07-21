@@ -21,6 +21,10 @@ $config = array(
 );
 
 Session::start($config);
+$_SESSION['name'] = 'ison.zhangs';
+//$_SESSION['age'] = '39';
+Session::delete('age');
 
+var_dump($_SESSION);
 
 

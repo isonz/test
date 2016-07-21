@@ -1,12 +1,6 @@
 <?php
 require_once('../config.php');
 
-//---------- Security
-$POST = Security::getRequest('post');	//安全
-$GET = Security::getRequest('get');
-$REQUEST = Security::getRequest('request');
-//------------ End Security
-
 //---------------- 控制器
 $uri = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : null;
 $action = null;
@@ -27,18 +21,12 @@ Templates::Assign('user', $user);
 Templates::Assign('action', $action);
 if($action){
 	$action = $action.".php";
-	$flag = 0;
-	foreach (glob("*.php") as $webroot){
-		if($action === $webroot){
-			require_once $action;
-			$flag = 1;
-			exit;
-		}
+	if(!file_exists($action)){
+		header("Location: "._ASPUB."/html/404.html");
+	}else{
+		require_once $action;
 	}
-	if(!$flag){
-		header("Location: /misc/html/404.html");
-		exit;
-	}
+	exit;
 }
 include_once 'home.php';
 

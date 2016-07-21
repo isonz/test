@@ -4,14 +4,10 @@ ini_set("display_startup_errors","1");
 ini_set("display_errors","On");
 ini_set('date.timezone','Asia/Shanghai');
 //======================================= Basic
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
+require_once 'E:/Z/LIB/core/config.php';
+
 if(!defined('_SITE')){
     define('_SITE', dirname(__FILE__) . DS);
-}
-if(!defined('_LIBS')){
-    define('_LIBS', _SITE . 'libs' . DS);
 }
 if(!defined('_MODS')){
 	define('_MODS', _SITE . 'mods' . DS);
@@ -26,21 +22,15 @@ if(!defined('_LOGS')){
     define('_LOGS', _DATA . 'logs' . DS);
 }
 
-foreach (glob(_LIBS."/*.php") as $libs){
-	require_once $libs;
-}
 foreach (glob(_MODS."/*.php") as $mods){
 	require_once $mods;
 }
 foreach (glob(_MODULES."/*.php") as $modules){
 	require_once $modules;
 }
-if(!defined('_SMARTY')){
-	define('_SMARTY', _LIBS . 'Smarty' . DS);
-}
-foreach (glob(_SMARTY."/*.php") as $lib_smarty){
-	require_once $lib_smarty;
-}
+
+import(Smarty, 'Smarty');
+import(Vcode, 'Vcode');
 
 if('127.0.0.8:888'==$_SERVER['HTTP_HOST']){
     define('_DEVICE', 'admin' . DS);
@@ -82,19 +72,6 @@ $GLOBALS['CONFIG_SMTP'] = array(
 );
 
 //===================================
-foreach (glob(_LIBS."/*.php") as $libs){
-	require_once $libs;
-}
-foreach (glob(_LIBS."/Vcode/*.php") as $vcode){
-	require_once $vcode;
-}
-foreach (glob(_MODS."/*.php") as $mods){
-	require_once $mods;
-}
-foreach (glob(_SMARTY."/*.php") as $lib_smarty){
-	require_once $lib_smarty;
-}
-
 $GLOBALS['EXCLUDE_URL'] = array('vcode');
 
 
