@@ -29,9 +29,6 @@ foreach (glob(_MODULES."/*.php") as $modules){
 	require_once $modules;
 }
 
-import(Smarty, 'Smarty');
-import(Vcode, 'Vcode');
-
 if('127.0.0.8:888'==$_SERVER['HTTP_HOST']){
     define('_DEVICE', 'admin' . DS);
 }else if('127.0.0.8:999'==$_SERVER['HTTP_HOST']){
