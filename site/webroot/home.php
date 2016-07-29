@@ -1,4 +1,5 @@
 <?php
+/*
 //$_GET = Security::getRequest('get');
 $title = isset($_GET['t']) ? $_GET['t'] : '';
 $action = isset($_GET['a']) ? $_GET['a'] : '';
@@ -10,5 +11,6 @@ if($title){
 	$test = Test::getList($where);
 	var_dump($test);
 }
+*/
 
 
