@@ -12,21 +12,18 @@ $sign = isset($_GET['sign']) ? $_GET['sign'] : '';
 if(!$sign) exit('No permission! 001');
 $decode = decode($sign, $decode_key);
 if(!$decode) exit('No permission! 002');
-$decode = explode(',', $decode);
+$decode = explode('|', $decode);
 $token = isset($decode[0]) ? $decode[0] : '';
-if(!$token || $$token != $decode_token) exit('No permission! 003');
+$time = isset($decode[1]) ? (int)$decode[1] : 0;
+if(!$token || $token != $decode_token) exit('No permission! 003');
+if(time() - $time > 120) exit('No permission! 004');
 //---- end auth
 
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 //ini_set("max_execution_time", 0);//避免数据量过大，导出不全的情况出现。
-set_time_limit(0);
+set_time_limit(1800);
 
-$filename=date("Y-m-d_H-i-s")."-".$dbname.".sql";
-header("Content-disposition:filename=".$filename);//所保存的文件名
-header("Content-type:application/octetstream");
-header("Pragma:no-cache");
-header("Expires:0");
 
 //备份数据
 $i = 0;
@@ -37,19 +34,30 @@ $db = mysql_select_db($dbname,$dbconn);
 mysql_query("SET NAMES 'utf8'");
 $tables =mysql_list_tables($dbname,$dbconn);
 $num_tables = @mysql_numrows($tables);
-print "-- filename=".$filename;
-print $crlf.$crlf;
+
+$filename=date("Y-m-d_H-i-s")."-".$dbname.".sql";
+$fp = fopen($filename, 'w');
+$print = "-- filename=".$filename;
+$print .= $crlf.$crlf;
+
+fwrite($fp, $print);
 while($i < $num_tables)
 {
     $table=mysql_tablename($tables,$i);
-    echo get_table_structure($dbname, $table, $crlf)."$crlf";
-    //echo get_table_def($dbname, $table, $crlf)."; $crlf";
-    echo get_table_content($dbname, $table, $crlf);
+    get_table_structure($fp, $dbname, $table, $crlf)."$crlf";
+    get_table_content($fp, $dbname, $table, $crlf);
     $i++;
 }
+fclose($fp);
 
-/*新增的获得详细表结构*/
-function get_table_structure($db,$table,$crlf)
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename="'.$filename.'"');
+readfile($filename);
+unlink($filename);
+exit;
+
+//新增的获得详细表结构
+function get_table_structure($fp, $db,$table,$crlf)
 {
     global $drop;
 
@@ -59,14 +67,12 @@ function get_table_structure($db,$table,$crlf)
     $schema_create .= $crlf."-- ".$row[0].$crlf;
     if(!empty($drop)){ $schema_create .= "DROP TABLE IF EXISTS `$table`;$crlf";}
     $schema_create .= $row[1].';'.$crlf;
-    Return $schema_create;
+    fwrite($fp, $schema_create);
 }
 
 //获得表内容
-function get_table_content($db, $table, $crlf)
+function get_table_content($fp, $db, $table, $crlf)
 {
-    $schema_create = "";
-    $temp = "";
     $result = mysql_db_query($db, "SELECT * FROM $table");
     $i = 0;
     while($row = mysql_fetch_row($result))
@@ -83,64 +89,10 @@ function get_table_content($db, $table, $crlf)
         }
         $schema_insert = ereg_replace(",$", "",$schema_insert);
         $schema_insert .= ");$crlf";
-        $temp = $temp.$schema_insert ;
+        fwrite($fp, $schema_insert);
         $i++;
     }
-    return $temp;
 }
-
-//原来别人的取得数据库结构，但不完整
-function get_table_def($db,$table,$crlf)
-{
-    global $drop;
-
-    $schema_create = "";
-    if(!empty($drop))
-        $schema_create .= "DROP TABLE IF EXISTS `$table`;$crlf";
-
-    $schema_create .= "CREATE TABLE `$table` ($crlf";
-    $result = mysql_db_query($db, "SHOW full FIELDS FROM $table");
-    while($row = mysql_fetch_array($result))
-    {
-        $schema_create .= " `$row[Field]` $row[Type]";
-
-        if(isset($row["Default"]) && (!empty($row["Default"]) || $row["Default"] == "0"))
-            $schema_create .= " DEFAULT '$row[Default]'";
-        if($row["Null"] != "YES")
-            $schema_create .= " NOT NULL";
-        if($row["Extra"] != "")
-            $schema_create .= " $row[Extra]";
-        if($row["Comment"] != "")
-            $schema_create .= " Comment '$row[Comment]'";
-        $schema_create .= ",$crlf";
-    }
-    $schema_create = ereg_replace(",".$crlf."$", "", $schema_create);
-    $result = mysql_db_query($db, "SHOW KEYS FROM $table");
-    while($row = mysql_fetch_array($result))
-    {
-        $kname=$row['Key_name'];
-        if(($kname != "PRIMARY") && ($row['Non_unique'] == 0))
-            $kname="UNIQUE|$kname";
-        if(!isset($index[$kname]))
-            $index[$kname] = array();
-        $index[$kname][] = $row['Column_name'];
-    }
-
-    while(list($x,$columns) = @each($index))
-    {
-        $schema_create .= ",$crlf";
-        if($x == "PRIMARY")
-            $schema_create .= " PRIMARY KEY (".implode($columns,", ") . ")";
-        elseif (substr($x,0,6) == "UNIQUE")
-            $schema_create .= " UNIQUE ".substr($x,7)." (" . implode($columns, ", ") . ")";
-        else
-            $schema_create .= " KEY $x (" . implode($columns, ", ") . ")";
-    }
-
-    $schema_create .= "$crlf)";
-    return (stripslashes($schema_create));
-}
-
 
 function decode($tex, $key = "key123@ison")
 {
@@ -166,5 +118,4 @@ function decode($tex, $key = "key123@ison")
     }
     return $reslutstr;
 }
-
 
