@@ -1,8 +1,8 @@
 <?php
 $host="127.0.0.1";      //数据库地址
-$dbname="sanya";        //数据库名
-$username="root";       //用户名
-$passw="admin888";      //密码
+$dbname="test_sanya";        //数据库名
+$username="sytour_en";       //用户名
+$passw="ZM6eWEUGKGJGrjfx";      //密码
 $decode_key = 'en@sanya.com';
 $decode_token = '274f6c49b3e31a0c1F3870BE274F6C49B3E31A0C6728957F';
 $drop = true;

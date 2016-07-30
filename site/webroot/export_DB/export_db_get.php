@@ -1,18 +1,20 @@
 <?php
-$filename = 'sanya.sql';
-$host = 'http://127.0.0.8/export_db/?sign=';
+$host = 'http://en.sanyatour.com/work/fun/export_db.php?sign=';
 $encode_key = 'en@sanya.com';
 $encode_token = '274f6c49b3e31a0c1F3870BE274F6C49B3E31A0C6728957F';
 
 set_time_limit(0);
 $encode_str = "$encode_token|".time();
 $encode_str = encode($encode_str, $encode_key);
-$url = $host.$encode_str;
 
-header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="'.$filename.'"');
-$data = curlGet($url);
-echo $data;
+$url = $host.$encode_str;
+echo $url;
+
+//$filename = 'sanya.sql';
+//header('Content-Type: application/octet-stream');
+//header('Content-Disposition: attachment; filename="'.$filename.'"');
+//$data = curlGet($url);
+//echo $data;
 
 
 function encode($tex, $key = "test123")
@@ -59,3 +61,5 @@ function curlGet($url)
 
     return $content;
 }
+
+?>

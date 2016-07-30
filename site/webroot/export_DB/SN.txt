@@ -1,0 +1,11 @@
+export_db.php : 放在数据库服务器端，并配置好数据库信息。
+
+其他文件和目录都在备份服务器端。
+
+data 目录存放备份数据文件。
+
+urls 为export_db_get.php生成加密的URL链接存放地
+
+cron_db.sh 为crontab运行文件
+
+* 01 * * * /www/Bak/website/en.sanyatour.com/cron_db.sh &> /dev/null
