@@ -69,10 +69,10 @@ $GLOBALS['CONFIG_SMTP'] = array(
 );
 
 $GLOBALS['CONFIG_FTP'] = array(
-	'server'    => "121.41.18.172",
-	'user'      => "ison",
-	'passwd'    => "ison.zhang",
-	'port'      => 65521,
+	'server'    => "121.xx.xx.172",
+	'user'      => "xx",
+	'passwd'    => "xx",
+	'port'      => 21,
 	'passive'   => true,
 	'timeout'	=> 90
 );
