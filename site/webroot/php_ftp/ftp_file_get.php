@@ -1,8 +1,8 @@
 ﻿<?php
 $GLOBALS['CONFIG_FTP'] = array(
-	'server'    => "124.225.214.76",
-	'user'      => "sytour_en",
-	'passwd'    => "sytour_en_201620",
+	'server'    => "124.xxx.xx.xx",
+	'user'      => "xxxx",
+	'passwd'    => "xxxx",
 	'port'      => 21,
 	'passive'   => true,
 	'timeout'	=> 90
