@@ -68,6 +68,16 @@ $GLOBALS['CONFIG_SMTP'] = array(
 	'passwd'    => ""
 );
 
+$GLOBALS['CONFIG_FTP'] = array(
+	'server'    => "121.41.18.172",
+	'user'      => "ison",
+	'passwd'    => "ison.zhang",
+	'port'      => 65521,
+	'passive'   => true,
+	'timeout'	=> 90
+);
+
+
 //===================================
 $GLOBALS['EXCLUDE_URL'] = array('vcode');
 
