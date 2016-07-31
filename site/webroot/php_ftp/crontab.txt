@@ -1,0 +1,1 @@
+* 01 * * 6 /www/Bak/website/en.sanyatour.com/cron_code.sh &> /dev/null
