@@ -18,7 +18,7 @@ $session_id = session_id();
 $config = array(
     'server_url' => 'http://127.0.0.223',
     'client_code' => 'me',
-    'app_code'  => 'TEST',
+    'app_code'  => 'AUTH',
     'app_token' => '84aeeeb10f2fa5b49969bf17e156e9ed',
     'app_key'   => 'TEST.Key',
 );
