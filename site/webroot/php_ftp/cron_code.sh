@@ -1,9 +1,10 @@
 #!/bin/bash
 
-bak_dir=/www/Bak/website/en.sanyatour.com/code;
+base_dir=/www/Bak/website/en.sanyatour.com;
+bak_dir=$base_dir/code;
 date_now=`date +%Y`-`date +%m`-`date +%d`;
 
-php ftp_file_get.php
+php $base_dir/ftp_file_get.php
 
 tar zcvfP $bak_dir/$date_now.tar.gz $bak_dir/site/
 find $bak_dir -mtime +70 -name "*.*" -exec rm -rf {} \;
