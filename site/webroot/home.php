@@ -13,4 +13,11 @@ if($title){
 }
 */
 
+$str = "name1=value1&name2=value2";
+$encode = Func::enAES($str, "key123@ison");
+var_dump($encode);
+$decode = Func::deAES($encode, "key123@ison");
+var_dump($decode);
+
+//$json = SecReq::send("http://localhost:8080/myssh/message/spost", "123456", "name1=value1&name2=value2", "name3=value3&name4=value4", "k125");
 
