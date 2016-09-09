@@ -9,7 +9,7 @@ define('_FILE_KEY_', 'DEMO@Key');
 
 $username = 'demo';
 $encode_data = array('username'=>$username);
-$url_param = "client="._FILE_CLIENT_."&appCode="._FILE_CODE_.'&'.SecReq::setEncode(_FILE_TOKEN_, _FILE_KEY_, $encode_data);
+$url_param = "client="._FILE_CLIENT_."&appCode="._FILE_CODE_.'&sign='.SecReq::setEncode(_FILE_TOKEN_, _FILE_KEY_, $encode_data);
 $file_url = _FILE_URL_ ."/?".$url_param;
 $avatar_url = _FILE_URL_ ."/avatar/?".$url_param;
 

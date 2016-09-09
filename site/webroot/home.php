@@ -24,5 +24,5 @@ $decode = Func::deAES($encode, $key);
 var_dump($decode);
 
 $content = SecReq::send("http://localhost:8080/myssh/message/spost", $token, $str, $ext_data, $key);
-
 var_dump($content);
+
