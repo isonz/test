@@ -13,10 +13,10 @@ if($title){
 }
 */
 
-$str = "name1=value1&name2=value2";
-$token = "123456";
-$key = "k1255";
-$ext_data = "name3=value3&name4=value4";
+$str = "昨天=张小生&name2=今天";
+$token = "token123456";
+$key = "k125577";
+$ext_data = "name3=明天&昨天=value4";
 
 $encode = Func::enAES($str, $key);
 var_dump($encode);
