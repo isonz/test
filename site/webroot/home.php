@@ -14,10 +14,15 @@ if($title){
 */
 
 $str = "name1=value1&name2=value2";
-$encode = Func::enAES($str, "key123@ison");
+$token = "123456";
+$key = "k1255";
+$ext_data = "name3=value3&name4=value4";
+
+$encode = Func::enAES($str, $key);
 var_dump($encode);
-$decode = Func::deAES($encode, "key123@ison");
+$decode = Func::deAES($encode, $key);
 var_dump($decode);
 
-//$json = SecReq::send("http://localhost:8080/myssh/message/spost", "123456", "name1=value1&name2=value2", "name3=value3&name4=value4", "k125");
+$content = SecReq::send("http://localhost:8080/myssh/message/spost", $token, $str, $ext_data, $key);
 
+var_dump($content);
